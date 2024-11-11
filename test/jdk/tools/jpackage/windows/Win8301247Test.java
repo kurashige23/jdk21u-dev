@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2023, 2024, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -95,17 +95,19 @@ public class Win8301247Test {
             int expectedCount) {
         // Get the list of PIDs and PPIDs of app launcher processes.
         // wmic process where (name = "foo.exe") get ProcessID,ParentProcessID
-        List<String> output = Executor.of("wmic", "process", "where", "(name",
+        Executor executor = Executor.of("wmic", "process", "where", "(name",
                 "=",
                 "\"" + cmd.appLauncherPath().getFileName().toString() + "\"",
-                ")", "get", "ProcessID,ParentProcessID").dumpOutput(true).
-                saveOutput().executeAndGetOutput();
-
+                ")", "get", "ProcessID,ParentProcessID").dumpOutput(true).saveOutput();
+        List<String> output;
         if (expectedCount == 0) {
-            TKit.assertEquals("No Instance(s) Available.", output.getFirst().
+            // run setWinEnableUTF8(true) for JDK-XXXXXXX
+            output = executor.setWinEnableUTF8(true).executeAndGetOutput();
+            TKit.assertEquals("No Instance(s) Available.", output.get(1).
                     trim(), "Check no app launcher processes found running");
             return Optional.empty();
         }
+        output = executor.executeAndGetOutput();
 
         String[] headers = Stream.of(output.getFirst().split("\\s+", 2)).map(
                 String::trim).map(String::toLowerCase).toArray(String[]::new);
