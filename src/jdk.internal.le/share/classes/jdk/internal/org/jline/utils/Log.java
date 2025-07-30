@@ -11,9 +11,9 @@ package jdk.internal.org.jline.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.function.Supplier;
-//import java.util.logging.Level;
-//import java.util.logging.LogRecord;
-//import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 /**
  * Internal logger.
@@ -23,39 +23,39 @@ import java.util.function.Supplier;
  * @since 2.0
  */
 public final class Log {
-//    private static final Logger logger = Logger.getLogger("org.jline");
+   private static final Logger logger = Logger.getLogger("org.jline");
 
     public static void trace(final Object... messages) {
-//        log(Level.FINEST, messages);
+       log(Level.FINEST, messages);
     }
 
     public static void trace(Supplier<String> supplier) {
-//        log(Level.FINEST, supplier);
+       log(Level.FINEST, supplier);
     }
 
     public static void debug(Supplier<String> supplier) {
-//        log(Level.FINE, supplier);
+       log(Level.FINE, supplier);
     }
 
     public static void debug(final Object... messages) {
-//        log(Level.FINE, messages);
+       log(Level.FINE, messages);
     }
 
     public static void info(final Object... messages) {
-//        log(Level.INFO, messages);
+       log(Level.INFO, messages);
     }
 
     public static void warn(final Object... messages) {
-//        log(Level.WARNING, messages);
+       log(Level.WARNING, messages);
     }
 
     public static void error(final Object... messages) {
-//        log(Level.SEVERE, messages);
+       log(Level.SEVERE, messages);
     }
 
     public static boolean isDebugEnabled() {
-//        return isEnabled(Level.FINE);
-        return false;
+       return isEnabled(Level.FINE);
+        // return false;
     }
 
     /**
@@ -78,46 +78,46 @@ public final class Log {
         }
     }
 
-//    static LogRecord createRecord(final Level level, final Object... messages) {
-//        Throwable cause = null;
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        PrintStream ps = new PrintStream(baos);
-//        for (int i = 0; i < messages.length; i++) {
-//            // Special handling for the last message if it's a throwable, render its stack on the next line
-//            if (i + 1 == messages.length && messages[i] instanceof Throwable) {
-//                cause = (Throwable) messages[i];
-//            } else {
-//                render(ps, messages[i]);
-//            }
-//        }
-//        ps.close();
-//        LogRecord r = new LogRecord(level, baos.toString());
-//        r.setThrown(cause);
-//        return r;
-//    }
-//
-//    static LogRecord createRecord(final Level level, final Supplier<String> message) {
-//        return new LogRecord(level, message.get());
-//    }
-//
-//    static void log(final Level level, final Supplier<String> message) {
-//        logr(level, () -> createRecord(level, message));
-//    }
-//
-//    static void log(final Level level, final Object... messages) {
-//        logr(level, () -> createRecord(level, messages));
-//    }
-//
-//    static void logr(final Level level, final Supplier<LogRecord> record) {
-//        if (logger.isLoggable(level)) {
-//            // inform record of the logger-name
-//            LogRecord tmp = record.get();
-//            tmp.setLoggerName(logger.getName());
-//            logger.log(tmp);
-//        }
-//    }
-//
-//    static boolean isEnabled(Level level) {
-//        return logger.isLoggable(level);
-//    }
+   static LogRecord createRecord(final Level level, final Object... messages) {
+       Throwable cause = null;
+       ByteArrayOutputStream baos = new ByteArrayOutputStream();
+       PrintStream ps = new PrintStream(baos);
+       for (int i = 0; i < messages.length; i++) {
+           // Special handling for the last message if it's a throwable, render its stack on the next line
+           if (i + 1 == messages.length && messages[i] instanceof Throwable) {
+               cause = (Throwable) messages[i];
+           } else {
+               render(ps, messages[i]);
+           }
+       }
+       ps.close();
+       LogRecord r = new LogRecord(level, baos.toString());
+       r.setThrown(cause);
+       return r;
+   }
+
+   static LogRecord createRecord(final Level level, final Supplier<String> message) {
+       return new LogRecord(level, message.get());
+   }
+
+   static void log(final Level level, final Supplier<String> message) {
+       logr(level, () -> createRecord(level, message));
+   }
+
+   static void log(final Level level, final Object... messages) {
+       logr(level, () -> createRecord(level, messages));
+   }
+
+   static void logr(final Level level, final Supplier<LogRecord> record) {
+       if (logger.isLoggable(level)) {
+           // inform record of the logger-name
+           LogRecord tmp = record.get();
+           tmp.setLoggerName(logger.getName());
+           logger.log(tmp);
+       }
+   }
+
+   static boolean isEnabled(Level level) {
+       return logger.isLoggable(level);
+   }
 }

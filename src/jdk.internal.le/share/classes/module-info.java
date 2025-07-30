@@ -51,5 +51,7 @@ module jdk.internal.le {
     // Console
     provides jdk.internal.io.JdkConsoleProvider with
             jdk.internal.org.jline.JdkConsoleProviderImpl;
+
+    requires java.logging;
 }
 

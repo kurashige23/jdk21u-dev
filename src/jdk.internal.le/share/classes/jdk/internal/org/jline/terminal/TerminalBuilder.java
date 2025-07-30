@@ -423,6 +423,7 @@ public final class TerminalBuilder {
         List<TerminalProvider> providers = getProviders(provider, exception);
         Terminal terminal = null;
         if ((system != null && system) || (system == null && in == null && out == null)) {
+            Log.debug("[DEBUG] Creating a sysTerminal");
             if (system != null
                     && ((in != null && !in.equals(System.in))
                             || (out != null && !out.equals(System.out) && !out.equals(System.err)))) {
@@ -510,6 +511,7 @@ public final class TerminalBuilder {
                 }
             }
         } else {
+            Log.debug("[DEBUG] Creating a newTerminal");
             for (TerminalProvider prov : providers) {
                 if (terminal == null) {
                     try {
